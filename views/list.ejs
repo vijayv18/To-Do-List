@@ -23,11 +23,25 @@
   
     
 
-    <form class="item" action="/" method="post">
-      <input type="text" name="newTodo" placeholder="New Item" autocomplete="off" autofocus>
+    <form class="item" action="/" method="post" onsubmit="return validateForm()">
+      <input type="text" id="inputField" name="newTodo" placeholder="Enter your task" autocomplete="off" autofocus>
       <button type="submit" name="listSubmit" value=<%= listTitle %>>+</button>
     </form>
+
   </div>
+
+  <script>
+      function validateForm() {
+      var inputValue = document.getElementById("inputField").value;
+      
+      if (inputValue.trim() === "") {
+          alert("Please enter some value");
+          return false; // Prevent form submission
+      }
+      // If input has value, allow the form to be submitted
+      return true;
+    }
+  </script>
 
 </body>
 

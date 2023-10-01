@@ -27,6 +27,12 @@ const item3 = new Item({
   name: "You can delete list items by checking them off"
 })
 
+const item4 = new Item({
+  name: "You can just create and access specific lists for specific tasks by just adding a '/(name of your choice)' after the URL"
+})
+
+var myDefault = [item1,item2,item3,item4];
+
 const listSchema = ({
   name: String,
   items: [itemsSchema]
@@ -45,7 +51,7 @@ app.get("/", function(req, res) {
     .then((foundItems)=>{
 
       if(foundItems.length === 0) {
-        Item.insertMany([item1,item2,item3])
+        Item.insertMany(myDefault)
         .then(()=> {
             console.log("Successfully added all items to todolistDB");
         })
@@ -75,10 +81,16 @@ app.get("/:customListNames", function(req, res){
   List.findOne({name: customListName})
     .then((foundList)=>{
       if(!foundList) {
+
+        const customItem = new Item({
+          name: `Welcome to your ${customListName} list`,
+        });
+
         const list = new List({
           name: customListName,
-          items: [item1,item2,item3]
+          items: customItem,
         });
+
         list.save();
         res.redirect("/"+customListName);
       } else {
